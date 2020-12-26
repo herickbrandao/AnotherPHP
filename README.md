@@ -63,7 +63,7 @@ class example {
 }
 ```
 
-**Example methods:**<br/>
+**Example methods:**<br/><br/>
 Database call
 ```php
 public function databaseExample() {
