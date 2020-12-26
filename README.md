@@ -108,10 +108,10 @@ class example {
     $method  = Request::getMethod();
 
     $sql = match($method) {
-      'get'   => "SELECT * FROM users WHERE username = :username",
+      'get'    => "SELECT * FROM users WHERE username = :username",
       'post'   => "INSERT INTO users (username,password) VALUES (:username, :password)",
-      'put'   => "UPDATE users SET (username = :username, password = :password) WHERE username = :username",
-      'patch'   => "UPDATE users SET (password = :password) WHERE username = :username",
+      'put'    => "UPDATE users SET (username = :username, password = :password) WHERE username = :username",
+      'patch'  => "UPDATE users SET (password = :password) WHERE username = :username",
       'delete' => "DELETE FROM users WHERE username = :username AND password = :password",
       default  => throw new \Exception('Unsupported')
     };
