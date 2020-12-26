@@ -10,6 +10,7 @@ Framework for PHP8 or Higher!
 1. PHP;
 1. Classes;
 1. Namespaces;
+1. Rest Api;
 
 ## Routing
 **/config/routes.php**:
