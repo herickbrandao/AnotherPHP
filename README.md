@@ -132,3 +132,33 @@ public function restfulApiExample() {
   }
 }
 ```
+
+## Request Class
+```php
+# It's like: $_GET["name"];
+echo Request::get("name");
+
+# It's like: $_POST["name"], but also accept "POST" requests;
+echo Request::post("name");
+
+# get "PUT" requests;
+echo Request::put("name");
+
+# get "DELETE" requests;
+echo Request::delete("name");
+
+# get "PATCH" requests;
+echo Request::patch("name");
+
+# get every request based on server request method (including dynamic url parameters);
+echo Request::take("name");
+
+# get uri parameters;
+echo Request::params("id");
+
+# get url segment by position
+echo Request::segment(1);
+
+# get server request method;
+echo Request::getMethod();
+```
