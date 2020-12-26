@@ -58,7 +58,7 @@ use \system\Response;
 
 class example {
   public function index() {
-    Response::text("Hello World");
+    Response::echo("Hello World");
   }
 }
 ```
