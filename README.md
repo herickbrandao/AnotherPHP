@@ -81,7 +81,8 @@ public function databaseExample() {
     args: ["admin", "1234"]
   );
 
-  print_r($data);
+  print_r($data);  
+  # PS: if "sql" was a INSERT, you can get the id by: Database::lastId();
 }
 ```
 
