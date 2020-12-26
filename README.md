@@ -1,5 +1,5 @@
 # AnotherPHP
-Framework for PHP8 or Higher
+Framework for PHP8 or Higher!
 
 ## Getting Started
 1. Download this repo;
