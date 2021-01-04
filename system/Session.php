@@ -5,7 +5,7 @@ class Session {
 
 	private static function init(string $key) {
 		if(!isset($_COOKIE[$key]))
-			$_COOKIE[$key] = md5($key.date('dmyHis').rand().microtime());
+			$_COOKIE[$key] = md5($key.date('dmyHis').uniqid().mt_rand());
 
 		if (self::is_session_started())
 			session_write_close();
