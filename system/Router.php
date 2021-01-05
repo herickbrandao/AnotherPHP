@@ -8,6 +8,7 @@ interface iRouter {
 	public static function put(string $request, mixed $callback, string $title = "");
 	public static function delete(string $request, mixed $callback, string $title = "");
 	public static function patch(string $request, mixed $callback, string $title = "");
+	public static function match(array $method, string $request, mixed $callback, string $title = "");
 
 	# other functions
 	public static function find(array $uri);
@@ -56,7 +57,18 @@ class Router implements iRouter {
 			self::$titles['delete'][$request] = $title;
 			self::$titles['patch'][$request] = $title;
 		}
-		return $this;
+		return new self;
+	}
+	public static function match(array $method, string $request, mixed $callback, string $title = "") {
+		foreach($method as $met) {
+			$met = strtolower($met);
+			self::$router[$met][$request] = $callback;
+			if(!empty($title)) { self::$titles[$met][$request] = $title; }
+		}
+		return new self;
+	}
+	public static function mat(array $method, string $request, mixed $callback, string $title = "") {
+		return self::match($method, $request, $callback, $title);
 	}
 
 	public static function set404(string $callback = "system/404.html", string $title = "") {
