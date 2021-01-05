@@ -23,6 +23,7 @@ Router::add(request: "/contact", callback: "controllers/myClass::Method", title:
 
 # dynamic routes
 Router::get("/api/:req", "controllers/example::index");
+
 Router::get("/user/:id", function() {
 	$id = \system\Request::params("id");
 
@@ -32,18 +33,23 @@ Router::get("/user/:id", function() {
 		Router::call404();
 });
 
+# multiple methods
+Router::match(['get', 'post'], "/page", "controllers/example::index");
+
 # restApi's functions
 Router
 	::get(request: "", callback: "")
 	::post(request: "", callback: "")
 	::put(request: "", callback: "")
 	::delete(request: "", callback: "")
-	::patch(request: "", callback: "");
+	::patch(request: "", callback: "")
+	::match(method: [''], request: "", callback: "");
 	
 	# Aliases
 	::pos(request: "", callback: "") # post
 	::del(request: "", callback: "") # delete
 	::pat(request: "", callback: "") # patch
+	::mat(method: [''], request: "", callback: "") # match
 
 # calling 404 page (this gonna end the entire script)
 Router::call404();
