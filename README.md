@@ -22,7 +22,7 @@ Router::add(request: "/contact", callback: "controllers/myClass::Method", title:
 # dynamic routes
 Router::get("/api/:req", "controllers/example::index");
 Router::get("/user/:id", function() {
-  $id = \system\Request::params("id");
+  $id = Another\System\Request::params("id");
 
   if(is_numeric($id) && (int)$id == $id)
     return "controllers/example::index";
@@ -52,10 +52,10 @@ Default template for **/controllers/*.php**:
 ```php
 <?php
 
-use \system\Database;
-use \system\Session;
-use \system\Request;
-use \system\Response;
+use Another\System\Database;
+use Another\System\Session;
+use Another\System\Request;
+use Another\System\Response;
 
 class example {
   public function index() {
