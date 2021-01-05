@@ -1,11 +1,24 @@
-<?php namespace system;
+<?php namespace Another\System;
 
-class Session {
+interface iSession {
+	public static function write(string $name, mixed $method);
+	public static function create(string $key, mixed $array, mixed $content = false);
+	public static function is_created(string $key);
+	public static function get(string $var=null);
+	public static function set(string|array|object $name, mixed $content = false);
+	public static function unset(string|array|object $name);
+	public static function destroy();
+	public static function destroy_all();
+	public static function destroy_one(string $key);
+	public static function is_session_started();
+}
+
+class Session implements iSession {
 	private static array $scope=[]; # session's config
 
 	private static function init(string $key) {
 		if(!isset($_COOKIE[$key]))
-			$_COOKIE[$key] = md5($key.date('dmyHis').uniqid().mt_rand());
+			$_COOKIE[$key] = md5($key.uniqid().mt_rand());
 
 		if (self::is_session_started())
 			session_write_close();
@@ -75,7 +88,7 @@ class Session {
 		}
 	}
 
-	public static function set(string|array|object $name, mixed $content = false ) {
+	public static function set(string|array|object $name, mixed $content = false) {
 		if( is_array($name) ) {
 			foreach ($name as $key => $value) {
 				$_SESSION[$key] = $value;

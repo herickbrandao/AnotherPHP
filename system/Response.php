@@ -1,6 +1,17 @@
-<?php namespace system;
+<?php namespace Another\System;
 
-class Response {
+interface iResponse {
+	public static function status($num);
+	public static function json($json, $opt = false);
+	public static function file($file);
+	public static function inc($file);
+	public static function echo($text);
+	public static function view($sys_file_basis, $data = false);
+	public static function redirect($url = null);
+	public static function call404();
+}
+
+class Response implements iResponse {
 	public static function status($num) {
 		http_response_code($num);
 		return new self;
@@ -60,7 +71,7 @@ class Response {
 		}
 	}
 
-	public static function redirect( $url = null ) {
+	public static function redirect($url = null) {
 		# if is a complete uri (in theory)
 		if(stripos($url, '.') !== false){
 			header("Location: ".$url);

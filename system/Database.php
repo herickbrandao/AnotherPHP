@@ -1,8 +1,16 @@
-<?php namespace system;
+<?php namespace Another\System;
 
-use PDO;
+use \PDO;
 
-class Database {
+interface iDatabase {
+	public static function set(string $name, array $data);
+	public static function close();
+	public static function lastId();
+	public static function query(string $db, string $sql, array|bool $args = false);
+	public static function queryRow(string $db, string $sql, array|bool $args = false);
+}
+
+class Database implements iDatabase {
 	# database connection and all db informations
 	private static $connection=[], $databases=[];
 

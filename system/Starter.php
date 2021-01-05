@@ -1,4 +1,4 @@
-<?php namespace system;
+<?php namespace Another\System;
 
 require_once("Router.php");
 require_once("Request.php");
@@ -10,7 +10,7 @@ interface iStarter {
 	public static function run();
 }
 
-class Starter implements iStarter {	
+class Starter implements iStarter {
 	# contains the server response
 	private static string $uri;
 

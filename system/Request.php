@@ -1,6 +1,21 @@
-<?php namespace system;
+<?php namespace Another\System;
 
-class Request {
+interface iRequest {
+	public static function get(string|array $name = null);
+	public static function post(string|array $name = null);
+	public static function put(string|array $name = null);
+	public static function delete(string|array $name = null);
+	public static function patch(string|array $name = null);
+	public static function take(string|array $name = null);
+	public static function segment(int $int = 0);
+	public static function params(string $pos = null);
+	public static function getUserIp();
+	public static function cookie(string $name = null);
+	public static function set(string $type, string|array $data, $cont = false);
+	public static function getMethod();
+}
+
+class Request implements iRequest {
 	private static array|object $PUT=[],$DEL=[],$PAT=[],$HEADER=[],$SEGMENT=[],$PARAMS=[];
 	private static string $REQUEST_METHOD;
 

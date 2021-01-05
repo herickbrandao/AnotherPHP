@@ -1,5 +1,12 @@
-<?php use \system\Session;
+<?php use Another\System\Session;
 
+/*
+ * AnotherPHP v1.1 - Sessions
+ * Every session request that uses Session::start(key: "session_name")
+ * will execute these configured methods when it is called
+ *
+ * See more: https://github.com/herickbrandao/AnotherPHP
+ */
 Session::write('session_name', function() {
 	if( !Session::has('id') ) {
 		# forbbiden access #403

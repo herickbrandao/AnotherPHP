@@ -1,4 +1,4 @@
-<?php namespace system;
+<?php namespace Another\System;
 
 interface iRouter {
 	# restApi's methods

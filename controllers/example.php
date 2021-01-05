@@ -1,13 +1,17 @@
 <?php
 
-use \system\Database;
-use \system\Session;
-use \system\Request;
-use \system\Response;
+use Another\System\Database;
+use Another\System\Session;
+use Another\System\Request;
+use Another\System\Response;
 
+/*
+ * AnotherPHP v1.1 - Example Methods
+ * See more: https://github.com/herickbrandao/AnotherPHP
+ */
 class example {
 	public function index() {
-		include("../views/Welcome.php");
+		include_once '../views/Welcome.php';
 	}
 
 	public function databaseExample() {
