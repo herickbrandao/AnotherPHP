@@ -1,6 +1,7 @@
 <?php namespace Another\System;
 
 interface iSession {
+	public static function start(string $key);
 	public static function write(string $name, mixed $method);
 	public static function create(string $key, mixed $array, mixed $content = false);
 	public static function is_created(string $key);
