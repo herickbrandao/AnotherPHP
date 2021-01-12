@@ -82,7 +82,7 @@ public function databaseExample() {
   );
 
   print_r($data);  
-  # PS: if "sql" was a INSERT, you can get id by using: Database::lastId();
+  # PS: if "sql" was a INSERT, you can get id using: Database::lastId();
 }
 ```
 
