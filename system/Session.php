@@ -36,7 +36,8 @@ class Session implements iSession {
 	public static function create(string $key, mixed $array, mixed $content = false) {
 		self::init($key);
 
-		if(is_array($array)) {
+		if(is_array($array)||is_object($array)) {
+			$array = (array)$array;
 			foreach ($array as $k => $v)
 				$_SESSION[$k] = $v;
 		} else if ( !empty($content) ) {
