@@ -117,18 +117,18 @@ public function restfulApiExample() {
     default  => throw new \Exception('Unsupported')
   };
 
-  try {
-    $data = Database::query(
-      db: "my_db", # set in ../config/databases.php
-      sql: $sql,
-      args: [
-        ":username" => $request['username'],
-        ":password" => $request['password']
-      ]
-    );
+  $data = Database::query(
+    db: "my_db", # set in ../config/databases.php
+    sql: $sql,
+    args: [
+      ":username" => $request['username'],
+      ":password" => $request['password']
+    ]
+  );
 
+  if($data) {
     Response::status(200)::json($data);
-  } catch(PDOException $err) {
+  } else {
     Response::status(404)::json(["error" => $err]);
   }
 }
