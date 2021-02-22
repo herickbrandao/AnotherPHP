@@ -129,7 +129,7 @@ public function restfulApiExample() {
   if($data) {
     Response::status(200)::json($data);
   } else {
-    Response::status(404)::json(["error" => $err]);
+    Response::status(404)::json(["error" => $data]);
   }
 }
 ```
