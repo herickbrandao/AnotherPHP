@@ -120,16 +120,21 @@ class Request implements iRequest {
 		};
 
 		# set params in return
-		if(self::$REQUEST_METHOD !== "post") {
+		if(is_null($name)) {
+			foreach (self::$PARAMS as $key => $value) {
+				if(!isset($status[$key])) {
+					$status[$key] = $value;
+				}
+			}
+		} else {
 			if(is_array($name)) {
 				foreach ($name as $value) {
 					$status[$value] = isset(self::$PARAMS[$value]) ? self::$PARAMS[$value] : $status[$value];
 				}
-			} else {
-				$status[$name] = isset(self::$PARAMS[$name]) ? self::$PARAMS[$name] : $status[$name];
+			} else if(!empty($name)&&isset(self::$PARAMS[$name])&&!isset($status[$name])) {
+				$status[$name] = self::$PARAMS[$name];
 			}
 		}
-
 		return $status;
 	}
 
