@@ -1,4 +1,4 @@
-# AnotherPHP
+# AnotherPHP v1.1
 Framework for PHP8 or Higher!
 
 ## Getting Started
