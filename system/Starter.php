@@ -73,7 +73,7 @@ class Starter implements iStarter {
 				$call = new $call();
 
 				$method = $method[1];
-				$call->$method();
+				$call->$method(Request::take());
 			}
 
 			# end of framework (closing all db connections)
