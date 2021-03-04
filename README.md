@@ -58,7 +58,7 @@ use Another\System\Request;
 use Another\System\Response;
 
 class example {
-  public function index() {
+  public function index($request, $response) {
     Response::echo("Hello World");
   }
 }
