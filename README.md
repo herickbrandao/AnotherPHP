@@ -59,7 +59,7 @@ use Another\System\Response;
 
 class example {
   public function index() {
-    Response::echo("Hello World"); # you can also use Response::echo()
+    Response::echo("Hello World");
   }
 }
 ```
