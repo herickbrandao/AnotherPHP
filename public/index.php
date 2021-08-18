@@ -1,15 +1,7 @@
-<?php namespace Another\System;
+<?php
 
-/*
- * AnotherPHP v1.1
- * See more: https://github.com/herickbrandao/AnotherPHP
- */
-$min = '8.0.0';
-if( version_compare(phpversion(), $min) === -1 ) {
-	echo "<strong>Fatal error:</strong> The PHP version must be {$min} or higher!";
-	exit;
-}
-unset($min);
+// Framework starter
+include_once '../system/Root.php';
 
-require_once("../system/Starter.php");
-Starter::run();
+$app = new Another\Root;
+$app->Start();

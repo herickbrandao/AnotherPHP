@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="/assets/bootstrap-5-1-0.min.css">
+	<link rel="stylesheet" type="text/css" href="/assets/highlight.min.css">
+	<link rel="stylesheet" type="text/css" href="/assets/animate-4-1-1.min.css">
+	<script src="/assets/alpine-3-2-3.min.js" defer></script>
+	<script src="/assets/page-1-11-6.min.js"></script>
+	<script src="/assets/highlight.min.js"></script>
+	<title>Welcome to Another 2.0</title>
+</head>
+<body>
+	<section x-data="main_controller">
+		<main id="app"></main>
+	</section>
+
+	<!-- PAGE.JS (JS ROUTER) -->
+	<script type="text/javascript">
+		(function() {
+			document.body.style.overflow = "hidden";
+			
+			/**
+			* Default placement of application
+			*/
+			const $app = document.getElementById("app");
+
+			/**
+			* Convert a string to HTML entities
+			*/
+			const toHtmlEntities = function(string) {
+				return string.replace(/./gm, function(s) {
+					return (s.match(/[a-z0-9\s]+/i)) ? s : "&#" + s.charCodeAt(0) + ";";
+				}).trim();
+			};
+
+			/**
+			* Create string from HTML entities
+			*/
+			const fromHtmlEntities = function(string) {
+				return (string+"").replace(/&#\d+;/gm,function(s) {
+					return String.fromCharCode(s.match(/\d+/gm)[0]);
+				}).trim();
+			};
+
+			page('/', index);
+			page('/introduction', introduction);
+			page('/routes', routes);
+			page('/database', database);
+			page('/session', session);
+			page();
+
+			function index() {
+				$app.innerHTML = `
+					<div class="d-flex align-items-center justify-content-center" style="height: 100vh;">
+						<div class="text-center">
+							<h1 class="animate__animated animate__fadeInDown">Another <span x-text="version"></span></h1>
+							<p class="animate__animated animate__fadeInUp">PHP8+ Fullstack Framework</p>
+							<div class="text-center animate__animated animate__delay-1s animate__fadeInUp">
+								<button
+									class="btn btn-primary d-block d-md-inline-block mx-auto mb-2 mb-md-0"
+									x-on:click="redirect('/introduction')"
+									>Introduction</button>
+								<button
+									class="btn btn-primary d-block d-md-inline-block mx-auto mb-2 mb-md-0"
+									x-on:click="redirect('/routes')"
+									>Routes</button>
+								<button
+									class="btn btn-primary d-block d-md-inline-block mx-auto mb-2 mb-md-0"
+									x-on:click="redirect('/database')"
+									>Database</button>
+								<button
+									class="btn btn-primary d-block d-md-inline-block mx-auto mb-2 mb-md-0"
+									x-on:click="redirect('/session')"
+									>Session</button>
+								<a class="btn btn-primary d-block d-md-inline-block mx-auto mb-2 mb-md-0" href="https://github.com/herickbrandao/AnotherPHP" target="_blank">More</a>
+							</div>
+						</div>
+					</div>
+				`;
+			}
+
+			function introduction() {
+				$app.innerHTML = print_basis_html(`
+					Hello! <i>(world, maybe?)</i><br>
+					Welcome to <strong class="fw-bold">Another</strong>, a Object-Oriented Framework for PHP. There's a lot of work done here, you can check out our <a href="#" target="_blank">Github Page</a> and help us with this beautiful project :).<br><br>
+					We've done 3 basic Example Classes:<br>
+					- <i>app/baseController.php</i>: A class that uses our Database Connection Class (works like a PDO helper);<br>
+					- <i>app/baseSession.php</i>: A class that uses our Session/JWT Class;<br>
+					- <i>app/myController.php</i>: The main controller of this example page, you can change the Routes in <i>'app/config/routes.php'</i> and see how it is working.<br><br>
+
+					<h3>Data Injection</h3>
+					Dynamic routes are injected on <i>$_GET['ARGS']</i> PHP global variable, you call any place you want like:
+
+					<pre><code class="language-php">`
+					+toHtmlEntities(`
+<?php
+
+$router->get("/user/:id", function() use ($router) {
+    if(is_numeric($_GET['ARGS']['id'])) {
+        return "myController::anotherPageExample";
+    } else {
+        $router->call404();
+    }
+});
+					`)+`</code></pre>
+					Also any http request (POST,PUT,DELETE,PATCH) are injected into <i>$_POST</i> global variable.
+					<br><br>
+					<h3>Third Parties</h3>
+					This page uses 
+					<a href="https://alpinejs.dev" target="_blank">AlpineJS</a>,
+					<a href="https://animate.style" target="_blank">AnimateCSS</a>,
+					<a href="https://getbootstrap.com" target="_blank">Bootstrap</a>,
+					<a href="https://highlightjs.org" target="_blank">HighlightJS</a> and
+					<a href="https://visionmedia.github.io/page.js/" target="_blank">PageJS</a>.
+					`);
+
+				hljs.highlightAll();
+			}
+
+			function routes() {
+				$app.innerHTML = print_basis_html(`
+					Routes can be nested within each other, something like:<br><br>
+					app/config/routes.php:
+					<pre><code class="language-php">`
+					+toHtmlEntities(`
+<?php
+
+/*
+ * Instantiates the router class
+ */
+$router = new \\Another\\Router;
+
+$router
+    ->get("/", "myController::index")
+    ->post("/", "myController::index")
+    ->put("/", "myController::index")
+    ->delete("/", "myController::index")
+    ->patch("/", "myController::index");
+					`)+`</code></pre>
+
+					<br>
+					You can also redirect to a simple page (not a Class):
+					<pre><code class="language-php">`
+					+toHtmlEntities(`$router->get("/example", "app/example.html");`)+`</code></pre>
+
+					<br>
+					All dynamic routes are injected into <strong class="fw-bold">$_GET['ARGS']</strong> global variable and can be used like:
+					<pre><code class="language-php">`
+					+toHtmlEntities(`
+$router->get("/user/:id", function() use ($router) {
+    if(is_numeric($_GET['ARGS']['id'])) {
+        return "myController::anotherPageExample";
+    } else {
+        $router->call404();
+    }
+});`)+`</code></pre>`);
+
+				hljs.highlightAll();
+			}
+
+			function database() {
+				$app.innerHTML = print_basis_html(`
+					Our database class uses <a href="https://www.php.net/manual/pdo.construct.php" target="_blank">PDO</a> native connection for querys:
+					<pre><code class="language-php">`
+					+toHtmlEntities(`
+// Instantiating
+$this->db = new Another\\Database('mysql:host=localhost;dbname=example', 'root', '');
+
+// Exec (SQL)
+$data = $this->db->query('SELECT * FROM table');`
+					)+`</code></pre>
+
+					<br>
+					Data can be also be binded on query (prevents SQL Injection):
+					<pre><code class="language-php">`
+					+toHtmlEntities(`
+$data = $this->db->query('SELECT * FROM table WHERE id = :id', ['id' => 1]);`
+					)+`</code></pre>
+
+					<br>
+					Sometimes you're searching for a single result, in this case, you should use <i>'queryRow'</i>:
+					<pre><code class="language-php">`
+					+toHtmlEntities(`
+$data = $this->db->queryRow('SELECT * FROM table WHERE id = :id', ['id' => 1]);`
+					)+`</code></pre>
+
+					<br>
+					in most cases, you don't even need write querys, you can perform these functions: <i>'select', 'selectRow', 'insert', 'update' or 'delete'</i>:
+					<pre><code class="language-php">`
+					+toHtmlEntities(`
+$data = $this->db->selectRow('table', '*', 'id = :id', ['id' => $id]);`
+					)+`</code></pre>
+
+					<br>
+					For SQL Foreign Keys, you can merge JOINS with these functions (always 1 array with 2 strings as arguments):
+					<pre><code class="language-php">`
+					+toHtmlEntities(`
+// 'INNER JOIN' example:
+$data = $this->db
+	->iJoin(['table1.id','table2.id'])
+	->iJoin(['table2.table3_id','table3.id'])
+	->run('*', 'table1.id = :id', ['id' => 1]); // optional args`
+					)+`</code></pre>
+
+					<br>
+					You can see more examples at <i>app/baseController.php</i>.`);
+
+				hljs.highlightAll();
+			}
+
+			function session() {
+				$app.innerHTML = print_basis_html(`
+					There is 2 available methods: JWT and COOKIE, you can see full examples at <i>app/baseSession.php</i>.
+					<br><br>
+					You can create and validate using <a href="https://jwt.io" target="_blank">JWT</a>:
+					<pre><code class="language-php">`
+					+toHtmlEntities(`
+<?php
+// INSTANTIATING
+$this->session = new Session('YOUR-SECRET-HERE');
+
+// GENERATING A NEW JWT CODE (SEND THE PAYLOAD)
+$MY_JWT_HASH =  $this->session->jwt(['id' => 1, 'name' => 'YourName']);
+
+// VALIDATION (RETURNS TRUE/FALSE)
+$this->session->start($MY_JWT_HASH);`)+`</code></pre>
+					<br>
+					You can also use default PHP way, with SESSIONS (COOKIES):
+					<pre><code class="language-php">`
+					+toHtmlEntities(`
+<?php
+$this->session = new Session();
+$this->session->start("myOwnCookieSession"); // GIVE COOKIE/SESSION A NAME
+$this->session->set(['id' => 1, 'name' => 'YourName']); // SETTING PERSISTENT DATA`)+`</code></pre>`);
+
+				hljs.highlightAll();
+			}
+
+			function print_basis_html(string) {
+				return `
+				<ul class="container nav nav-pills d-flex justify-content-between">
+					<li class="nav-item animate__animated animate__slideInDown">
+						<a class="nav-link" href="#" x-on:click="redirect('/')"><< Back</a>
+					</li>
+					<li class="nav-item me-0 animate__animated animate__slideInDown">
+						<a class="nav-link pe-0">Another <span x-text="version"></span></a>
+					</li>
+				</ul>
+
+				<hr class="mt-0">
+
+				<section class="container animate__animated animate__fadeInUp" style="height:85vh;overflow:auto;">`+
+				string
+				+`</section>`;
+			}
+		})();
+	</script>
+
+	<!-- ALPINE.JS DATA -->
+	<script type="text/javascript">
+		document.addEventListener('alpine:init', function() {
+			Alpine.data('main_controller', function() {
+				return {
+					version: '2.0',
+					redirect(path) {
+						page(path);
+						this.$event.preventDefault();
+					}
+				};
+			});
+		});
+	</script>
+</body>
+</html>
