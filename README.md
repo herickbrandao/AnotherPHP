@@ -1,5 +1,5 @@
 # AnotherPHP v2.0
-A back-end Framework for PHP8 or higher!
+A Framework built for PHP8+
 
 ## Getting Started
 1. Download this repo;
