@@ -209,7 +209,7 @@ class baseController
 }
 ```
 
-Session example ($access = session data, like: id, username, photo...)
+Session example
 ```php
 <?php
 
