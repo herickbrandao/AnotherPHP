@@ -1,4 +1,4 @@
-# AnotherPHP v1.1
+# AnotherPHP v2.0
 A back-end Framework for PHP8 or higher!
 
 ## Getting Started
@@ -13,153 +13,246 @@ A back-end Framework for PHP8 or higher!
 1. Rest Api;
 
 ## Routing
-**/config/routes.php**:
+**app/config/routes.php**:
 ```php
-# page example (common view or class call)
-Router::add(request: "/contact", callback: "views/page1.html");
-Router::add(request: "/contact", callback: "controllers/myClass::Method", title: "Contact Page");
+/*
+ * Instantiates the router class
+ */
+$router = new \Another\Router;
 
-# dynamic routes
-Router::get("/api/:req", "controllers/example::index");
-Router::get("/user/:id", function() {
-  $id = Another\System\Request::params("id");
+/*
+ * Default Controller Method
+ * The class name needs to be the same as file name for Controller Routing
+ * There's: ->get(), ->post(), ->put(), ->delete() and ->patch()
+ *
+ * You can also route a php file normally, like:
+ *    $router->get("/", "app/myPage.php");
+ */
+$router->get("/", "myController::index");
+$router->get("/:page", "myController::index");
 
-  if(is_numeric($id) && (int)$id == $id)
-    return "controllers/example::index";
-  else
-    Router::call404();
+/*
+ * You can also create a dynamic route and/or bind the route with a function:
+ */
+$router->get("/user/:id", function() use ($router) {
+    if(is_numeric($_GET['ARGS']['id'])) {
+        return "myController::anotherPageExample";
+    } else {
+        $router->call404();
+    }
 });
 
-# restApi's functions
-Router
-  ::get(request: "", callback: "")
-  ::post(request: "", callback: "")
-  ::put(request: "", callback: "")
-  ::delete(request: "", callback: "")
-  ::patch(request: "", callback: "");
-  
-  # Aliases
-  ::pos(request: "", callback: "") # post
-  ::del(request: "", callback: "") # delete
-  ::pat(request: "", callback: "") # patch
-
-# calling 404 page (this gonna end the entire script)
-Router::call404();
+/* Required commands for routing system */
+$router->define404('system/404.html');
+$router->resolveRoute();
+$router->callRoute();
 ```
 
-## Controllers (class methods)
-Default template for **/controllers/*.php**:
+## Database example (class method)
+Default template:
 ```php
 <?php
 
-use Another\System\Database;
-use Another\System\Session;
-use Another\System\Request;
-use Another\System\Response;
+/**
+ * Extendable class for DB connection (PDO) - Example
+ */
+class baseController
+{
+	/**
+	 * The following line is required in a extended class constructor:
+	 *    parent::__construct(); 
+	 */
+	function __construct() {
+		/**
+		 * Helpful class that uses PDO
+		 * See: https://www.php.net/manual/pdo.construct.php
+		 */
+		$this->db = new Another\Database('mysql:host=localhost;dbname=example', 'root', '');
+	}
 
-class example {
-  public function index() {
-    Response::echo("Hello World");
-  }
-}
-```
+	/**
+	 * Get all users from table 'users' or false if it's empty
+	 * 
+	 * Full example:
+	 * 
+	 * $this->db->select(
+	 *    table: 'users', 
+	 *    select: '*', // (optional)
+	 *    where: 'name = :name', // (optional)
+	 *    data: ['name' => 'Example Name'], // (optional, but required if you want use 'bindValue()' in PDO)
+	 * );
+	 */
+	public function getUsers() {
+		return $this->db->select('users');
+	}
 
-**Example methods:**<br/><br/>
-Database call
-```php
-public function databaseExample() {
-  $data = Database::query(
-    db: "my_db", # set connection in ../config/databases.php
-    sql: "SELECT * FROM users WHERE id = :id",
-    args: [":id"=>"1"]
-  );
+	/**
+	 * Returns the first row from select or false if it's empty
+	 * 
+	 * Full example:
+	 * 
+	 * $this->db->selectRow(
+	 *    table: 'users', 
+	 *    select: '*', // (optional)
+	 *    where: 'id = :id', // (optional)
+	 *    data: ['id' => 1] // (optional, but required if you want use 'bindValue()' in PDO)
+	 * );
+	 */
+	public function getOneUser($id) {
+		return $this->db->selectRow('users', '*', 'id = :id', ['id' => $id]);
+	}
 
-  # you can also bind values like:
-  $data = Database::query(
-    db: "my_db", # set in ../config/databases.php
-    sql: "SELECT * FROM users WHERE username = ? AND password = ?",
-    args: ["admin", "1234"]
-  );
+	/**
+	 * Inserts a new user on 'users'
+	 * Returns true if successful, and false for error
+	 * 
+	 * Full example:
+	 * 
+	 * $this->db->insert(
+	 *    table: 'users',
+	 *    data: ['name' => 'Example Name']
+	 * );
+	 */
+	public function insertUser($data) {
+		return $this->db->insert('users', $data);
+	}
 
-  print_r($data);  
-  # PS: if "sql" was a INSERT, you can get id using: Database::lastId();
+	/**
+	 * Updates a user (where condition is required)
+	 * Returns true if some data has changed in database and false if it's not
+	 * 
+	 * Full example:
+	 * 
+	 * $this->db->update(
+	 *    table: 'users', 
+	 *    where: 'id = :id',
+	 *    data: ['id' => 1, 'name' => 'Example Name']
+	 * );
+	 */
+	public function updateUser($data) {
+		return $this->db->update('users', 'id = :id', $data);
+	}
+
+	/**
+	 * 'DELETE' query from SQL
+	 * Returns true if some data has been deleted in database and false if it's not
+	 * 
+	 * Full example:
+	 * 
+	 * $this->db->delete(
+	 *    table: 'users',
+	 *    where: 'id = :id',
+	 *    data: ['id' => 1]
+	 * );
+	 */
+	public function deleteUser($data) {
+		return $this->db->delete('users', 'id = :id', $data);
+	}
+
+	/**
+	 * Create your own custom query for PDO instance
+	 * 
+	 * Full example:
+	 * 
+	 * $this->db->query(
+	 *    sql: "SELECT * FROM users WHERE id = :id",
+	 *    data: ['id' => 1] // (optional, but required if you want use 'bindValue()' in PDO)
+	 * );
+	 */
+	public function customQuery() {
+		return $this->db->query("SELECT * FROM users WHERE id = :id", ['id' => 4]);
+	}
+
+	/**
+	 * For SQL Foreign Keys, you can merge JOINS with these functions (always 1 array with 2 strings as arguments):
+	 * 
+	 * // INNER JOIN
+	 * - iJoin(on: ['table1.id','table2.id']); 
+	 * 
+	 * // OUTER JOIN
+	 * - oJoin(on: ['table1.id','table2.id']);
+	 * 
+	 * // LEFT JOIN
+	 * - lJoin(on: ['table1.id','table2.id']); 
+	 * 
+	 * // RIGHT JOIN
+	 * - rJoin(on: ['table1.id','table2.id']);
+	 * 
+	 * // FULL JOIN
+	 * - fJoin(on: ['table1.id','table2.id']); 
+	 * 
+	 * // CROSS JOIN
+	 * - cJoin(on: ['table1.id','table2.id']);
+	 * 
+	 * Then, after set your merges, you should use the 'run()' function:
+	 * 
+	 * $this->db
+	 * 		->iJoin(['table1.id','table2.id'])
+	 * 		->iJoin(['table2.table3_id','table3.id'])
+	 * 		->run(select: '*', where: 'id = :id', data: ['id' => 1]);
+	 */
+	public function joinTables() {
+		return $this->db
+			->iJoin(['table1.id','table2.id'])
+			->iJoin(['table2.table3_id','table3.id'])
+			->run(); // optional args
+	}
+
+	/**
+	 * Rest Api example with database select
+	 */
+	public function printData(): void {
+		$data = $this->db->select('users');
+
+		echo json_encode($data, JSON_UNESCAPED_UNICODE);
+	}
 }
 ```
 
 Session example ($access = session data, like: id, username, photo...)
 ```php
-public function sessionExample() {
-  if( $access ) {
-    Session::create("language", $access); # method to create a session
-    Response::redirect('logged'); # redirects to the logged page
-  } else {
-    Response::redirect('/?e');
-  }
+<?php
 
-  # then in "logged" page:
-  # Session::start("language"); # set in ../config/sessions.php
+/**
+ * Example class use case's of Session
+ * There is 2 available methods: JWT and COOKIE
+ */
+class baseSession
+{
+	private $session;
+
+	/**
+	 * The following line is required in a extended class constructor:
+	 *    parent::__construct(); 
+	 */
+	function __construct()
+	{
+		/**
+		 * Session by JWT method:
+		 * new Session(secret: "YOUR-JWT-SECRET-HERE")
+		 * 
+		 * Generates a new JWT code (returns a string)
+		 * $this->session->jwt(payload: "YOUR-DATA (JSON OR ARRAY)");
+		 * 
+		 * JWT Validation (returns true/false)
+		 * $this->session->start("YOUR-JWT-FOR-VALIDATION");
+		 */
+		$this->session = new Session('$%(@))%*!)$#!%)!)*!21ve,WGOGWPKE');
+		$MY_JWT_HASH =  $this->session->jwt(['id' => 1, 'name' => 'YourName']);
+		var_dump( $this->session->start($MY_JWT_HASH) );
+
+		/**
+		 * Session by Cookie method
+		 * It's the basic session from PHP
+		 * 
+		 * Examples:
+		 * $this->session->set(["name" => "YourName"]); is equal to $_SESSION["name"] = "YourName";
+		 * $this->session->get("name"); is equal to $_SESSION["name"];
+		 */
+		$this->session = new Session();
+		$this->session->start("myOwnCookieSession");
+		$this->session->set(['id' => 1, 'name' => 'YourName']);
+		var_dump( $_SESSION );
+	}
 }
-```
-
-Restful Example
-```php
-public function restfulApiExample() {
-  # ::take checks the rest method to capture the attributes (get,post,put,delete,patch)
-  $request = Request::take(["username", "password"]);
-  $method  = Request::getMethod();
-
-  $sql = match($method) {
-    'get'    => "SELECT * FROM users WHERE username = :username",
-    'post'   => "INSERT INTO users (username,password) VALUES (:username, :password)",
-    'put'    => "UPDATE users SET (username = :username, password = :password) WHERE username = :username",
-    'patch'  => "UPDATE users SET (password = :password) WHERE username = :username",
-    'delete' => "DELETE FROM users WHERE username = :username AND password = :password",
-    default  => throw new \Exception('Unsupported')
-  };
-
-  $data = Database::query(
-    db: "my_db", # set in ../config/databases.php
-    sql: $sql,
-    args: [
-      ":username" => $request['username'],
-      ":password" => $request['password']
-    ]
-  );
-
-  if($data) {
-    Response::status(200)::json($data);
-  } else {
-    Response::status(404)::json(["error" => $data]);
-  }
-}
-```
-
-## Request Class
-```php
-# It's like: $_GET["name"];
-echo Request::get("name");
-
-# It's like: $_POST["name"], but also accept "POST" requests;
-echo Request::post("name");
-
-# get "PUT" requests;
-echo Request::put("name");
-
-# get "DELETE" requests;
-echo Request::delete("name");
-
-# get "PATCH" requests;
-echo Request::patch("name");
-
-# get every request based on server request method (including dynamic url parameters);
-echo Request::take("name");
-
-# get uri parameters;
-echo Request::params("id");
-
-# get url segment by position
-echo Request::segment(1);
-
-# get server request method;
-echo Request::getMethod();
 ```
