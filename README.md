@@ -59,7 +59,7 @@ Default template:
 class baseController
 {
 	/**
-	 * The following line is required in a extended class constructor:
+	 * The following line is required in an extended class constructor:
 	 *    parent::__construct(); 
 	 */
 	function __construct() {
