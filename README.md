@@ -79,7 +79,7 @@ class baseController
 	 *    table: 'users', 
 	 *    select: '*', // (optional)
 	 *    where: 'name = :name', // (optional)
-	 *    data: ['name' => 'Example Name'], // (optional, but required if you want use 'bindValue()' in PDO)
+	 *    data: ['name' => 'Example Name'], // (optional, but required if you want to use 'bindValue()' in PDO)
 	 * );
 	 */
 	public function getUsers() {
@@ -95,7 +95,7 @@ class baseController
 	 *    table: 'users', 
 	 *    select: '*', // (optional)
 	 *    where: 'id = :id', // (optional)
-	 *    data: ['id' => 1] // (optional, but required if you want use 'bindValue()' in PDO)
+	 *    data: ['id' => 1] // (optional, but required if you want to use 'bindValue()' in PDO)
 	 * );
 	 */
 	public function getOneUser($id) {
@@ -156,7 +156,7 @@ class baseController
 	 * 
 	 * $this->db->query(
 	 *    sql: "SELECT * FROM users WHERE id = :id",
-	 *    data: ['id' => 1] // (optional, but required if you want use 'bindValue()' in PDO)
+	 *    data: ['id' => 1] // (optional, but required if you want to use 'bindValue()' in PDO)
 	 * );
 	 */
 	public function customQuery() {
