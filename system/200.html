@@ -200,7 +200,7 @@ $data = $this->db->selectRow('table', '*', 'id = :id', ['id' => $id]);`
 // 'INNER JOIN' example:
 $data = $this->db
 	->iJoin(['table1.id','table2.id'])
-	->iJoin(['table2.table3_id','table3.id'])
+	->iJoin(['table3.id','table2.table3_id'])
 	->run('*', 'table1.id = :id', ['id' => 1]); // optional args`
 					)+`</code></pre>
 
