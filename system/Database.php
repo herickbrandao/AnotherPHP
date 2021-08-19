@@ -215,6 +215,25 @@ class Database
 	{
 		$this->connection = null;
 	}
+	
+	public function filterKeys(array $keys, array|object $data, bool $nulls = true): array
+	{
+		$new_array = array();
+
+		if($nulls) {
+			foreach ($keys as $key) {
+				$new_array[$key] = isset($data[$key]) ? $data[$key] : NULL;
+			}
+		} else {
+			foreach ($keys as $key) {
+				if(isset($data[$key])) {
+					$new_array[$key] = $data[$key];
+				}
+			}
+		}
+
+		return $new_array;
+	}
 
 	private function mergeJoin(string $join, array $tables, array $on): void
 	{
