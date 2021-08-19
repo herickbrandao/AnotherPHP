@@ -189,7 +189,7 @@ class Database
 
 	public function run(string $select = "*", string $where = "1", array|object $data = []): mixed
 	{
-		$this->join = "SELECT {$select} FROM {$tables[0]}" . $this->join;
+		$this->join = "SELECT {$select} FROM {$this->firstJoinTable}" . $this->join . " WHERE {$where}";
 
 		$query = $this->query($this->join, $data);
 
@@ -201,7 +201,7 @@ class Database
 	
 	public function runRow(string $select = "*", string $where = "1", array|object $data = []): mixed
 	{
-		$this->join = "SELECT {$select} FROM {$tables[0]}" . $this->join;
+		$this->join = "SELECT {$select} FROM {$this->firstJoinTable}" . $this->join . " WHERE {$where}";
 
 		$query = $this->query($this->join, $data);
 
