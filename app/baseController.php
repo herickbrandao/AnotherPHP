@@ -135,13 +135,13 @@ class baseController
 	 * 
 	 * $this->db
 	 * 		->iJoin(['table1.id','table2.id'])
-	 * 		->iJoin(['table2.table3_id','table3.id'])
+	 * 		->iJoin(['table3.id','table2.table3_id'])
 	 * 		->run(select: '*', where: 'id = :id', data: ['id' => 1]);
 	 */
 	public function joinTables() {
 		return $this->db
 			->iJoin(['table1.id','table2.id'])
-			->iJoin(['table2.table3_id','table3.id'])
+			->iJoin(['table3.id','table2.table3_id'])
 			->run(); // optional args
 	}
 
