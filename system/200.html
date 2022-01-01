@@ -219,7 +219,7 @@ $data = $this->db
 					+toHtmlEntities(`
 <?php
 // INSTANTIATING
-$this->session = new Session('YOUR-SECRET-HERE');
+$this->session = new Another\Session('YOUR-SECRET-HERE');
 
 // GENERATING A NEW JWT CODE (SEND THE PAYLOAD)
 $MY_JWT_HASH =  $this->session->jwt(['id' => 1, 'name' => 'YourName']);
@@ -231,7 +231,7 @@ $this->session->start($MY_JWT_HASH);`)+`</code></pre>
 					<pre><code class="language-php">`
 					+toHtmlEntities(`
 <?php
-$this->session = new Session();
+$this->session = new Another\Session();
 $this->session->start("myOwnCookieSession"); // GIVE COOKIE/SESSION A NAME
 $this->session->set(['id' => 1, 'name' => 'YourName']); // SETTING PERSISTENT DATA`)+`</code></pre>`);
 
