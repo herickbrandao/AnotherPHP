@@ -229,7 +229,7 @@ class baseSession
 	{
 		/**
 		 * Session by JWT method:
-		 * new Session(secret: "YOUR-JWT-SECRET-HERE")
+		 * new Another\Session(secret: "YOUR-JWT-SECRET-HERE")
 		 * 
 		 * Generates a new JWT code (returns a string)
 		 * $this->session->jwt(payload: "YOUR-DATA (JSON OR ARRAY)");
@@ -237,7 +237,7 @@ class baseSession
 		 * JWT Validation (returns true/false)
 		 * $this->session->start("YOUR-JWT-FOR-VALIDATION");
 		 */
-		$this->session = new Session('$%(@))%*!)$#!%)!)*!21ve,WGOGWPKE');
+		$this->session = new Another\Session('$%(@))%*!)$#!%)!)*!21ve,WGOGWPKE');
 		$MY_JWT_HASH =  $this->session->jwt(['id' => 1, 'name' => 'YourName']);
 		var_dump( $this->session->start($MY_JWT_HASH) );
 
