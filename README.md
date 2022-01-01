@@ -1,4 +1,4 @@
-# AnotherPHP v2.0
+# AnotherPHP v2.1
 A Framework built for PHP8+
 
 ## Getting Started
